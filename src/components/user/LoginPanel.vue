@@ -1,0 +1,112 @@
+<template>
+  <q-dialog v-model="show" persistent transition-show="scale" transition-hide="scale">
+    <q-card class="bg-white text-teal q-pa-md" style="width: 400px">
+      <q-form @submit="onSubmit"
+              class="q-gutter-md">
+        <q-input filled
+                 v-model="userLoginInfo.email"
+                 label="Your email *"
+                 lazy-rules
+                 :rules="[ val => val && val.length > 0 || 'Please type something']"
+        />
+
+        <q-input filled
+                 v-model="userLoginInfo.password"
+                 label="Your password *"
+                 lazy-rules
+                 @keypress.enter="onSubmit"
+                 :rules="[ val => val && val.length > 0 || 'Please type something']"
+        />
+      </q-form>
+
+      <q-card-actions class="bg-white text-teal">
+        <q-btn flat
+               label="Cancel"
+               @click="onClose"
+        />
+        <q-space />
+        <q-btn :loading="loading"
+               label="Login"
+               type="submit"
+               color="primary"
+               @click="onSubmit"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+</template>
+
+<script>
+  import globalVar from "src/store/globalvar";
+  export default {
+    inject: ['reload'],
+    name: "LoginPanel",
+    props: {
+      show: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data(){
+      return{
+        loading: false,
+        userLoginInfo: {
+          email: '',
+          password: '',
+        }
+      }
+    },
+    methods: {
+      onSubmit(){
+        // this.$emit('onSubmit',this.user)
+        this.loading = true
+        this.$axios.post("/center/login",this.userLoginInfo,)
+            .then( (response) => {
+              const data = response.data.result
+              if(data.status == 200){
+                localStorage.setItem('userInfo',JSON.stringify(data.user));
+                let item = localStorage.getItem('userInfo');
+                if(item!=null){
+                  console.log("用户已存在")
+                }
+                this.loading = false
+                this.onClose()
+                this.$store.commit('modify_login_status',true)
+                this.$notify.successNotify(data.msg)
+                // this.reload()
+                this.$ws.init()
+                let dataPacket = {
+                  protocol: globalVar.protocol.GLOBAL_LISTEN_INFO,
+                  packet: {
+                    senderId: data.user.id
+                  }
+                }
+                this.$ws.send(JSON.stringify(dataPacket),(e)=>{
+                  if(e.status == 200){
+                    if(e.sub_protocol === globalVar.protocol.CHAT_NOTIFY){
+                      this.$notify.chatNotify(e.chatPacket)
+                    }else {
+                      this.$notify.successNotify(e.msg)
+                    }
+                  }else {
+                    this.$notify.errorNotify(e.msg)
+                  }
+                })
+              }else {
+                this.loading = false
+                this.$notify.errorNotify(data.msg)
+              }
+            })
+      },
+      onClose(){
+        this.loading = false
+        // this.$notify.infoNotify("b")
+        this.$emit('onClose')
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
