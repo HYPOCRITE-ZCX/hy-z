@@ -9,6 +9,9 @@ const globalVar= {
     LIST_PANEL_LOAD: 'LIST_PANEL_LOAD', //用户列表加载
     GLOBAL_LISTEN_INFO: 'GLOBAL_LISTEN_INFO', //全局监听消息
     CHAT_NOTIFY: 'CHAT_NOTIFY', //聊天消息通知
+    ADD_USER: 'ADD_USER', //添加用户
+    PASS_USER: 'PASS_USER', //通过用户请求
+    ADD_REQUEST_NOTIFY: 'ADD_REQUEST_NOTIFY', //被添加方收到的通知
     HEARTBEAT: 'HEARTBEAT', //心跳
   },
   dataType: {

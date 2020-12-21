@@ -1,29 +1,29 @@
 <template>
   <div class="q-pa-md">
     <q-layout view="lHh Lpr lff">
-      <q-header elevated class="bg-black">
-        <q-toolbar>
-          <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-          <q-space />
-          <q-btn stretch flat @click="registerPersistent = true" label="Register" />
-          <q-separator vertical inset color="white" />
-          <q-btn v-if="!isLogin" stretch flat @click="loginPersistent = true" label="Login" />
-          <q-btn v-if="isLogin" stretch flat @click="logoutPersistent = true" label="Logout" />
+<!--      <q-header elevated class="bg-black">-->
+<!--        <q-toolbar>-->
+<!--          <q-btn flat @click="drawer = !drawer" round dense icon="menu" />-->
+<!--          <q-space />-->
+<!--          <q-btn stretch flat @click="registerPersistent = true" label="Register" />-->
+<!--          <q-separator vertical inset color="white" />-->
+<!--          <q-btn v-if="!isLogin" stretch flat @click="loginPersistent = true" label="Login" />-->
+<!--          <q-btn v-if="isLogin" stretch flat @click="logoutPersistent = true" label="Logout" />-->
 
-          <register-panel @onClose="registerClose"
-                          :show="registerPersistent">
-          </register-panel>
+<!--          <register-panel @onClose="registerClose"-->
+<!--                          :show="registerPersistent">-->
+<!--          </register-panel>-->
 
-          <login-panel @onClose="loginClose"
-                       :show="loginPersistent">
-          </login-panel>
+<!--          <login-panel @onClose="loginClose"-->
+<!--                       :show="loginPersistent">-->
+<!--          </login-panel>-->
 
-          <logout-panel @onCLose="logoutClose"
-                        :show="logoutPersistent">
-          </logout-panel>
+<!--          <logout-panel @onCLose="logoutClose"-->
+<!--                        :show="logoutPersistent">-->
+<!--          </logout-panel>-->
 
-        </q-toolbar>
-      </q-header>
+<!--        </q-toolbar>-->
+<!--      </q-header>-->
 
 <!--      主侧边栏-->
 
@@ -53,10 +53,55 @@
             </q-item>
 
           </q-list>
-<!--        </q-scroll-area>-->
+
+          <q-list padding
+                  class="absolute-bottom">
+            <q-item>
+              <q-btn round dense flat color="grey-8" icon="notifications">
+                <q-badge color="red" text-color="white" floating>
+                  2
+                </q-badge>
+              </q-btn>
+            </q-item>
+
+            <q-separator />
+
+            <q-item>
+              <q-btn round
+                     flat
+                     v-if="!isLogin"
+                     @click="loginPersistent = true">
+                <q-avatar size="36px">
+                  <img src="https://cdn.quasar.dev/img/account-avatar.png">
+                </q-avatar>
+                <q-tooltip>Account</q-tooltip>
+              </q-btn>
+
+              <q-btn round
+                     flat
+                     v-if="isLogin"
+                     @click="logoutPersistent = true">
+                <q-avatar size="36px">
+                  <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                </q-avatar>
+                <q-tooltip>Account</q-tooltip>
+              </q-btn>
+
+            </q-item>
+          </q-list>
       </q-drawer>
 
-      <q-page-container>
+
+      <login-panel @onClose="loginClose"
+                   :show="loginPersistent">
+      </login-panel>
+
+      <logout-panel @onClose="logoutClose"
+                    :show="logoutPersistent">
+      </logout-panel>
+
+
+      <q-page-container style="height: 100%">
         <router-view />
       </q-page-container>
 
@@ -79,17 +124,17 @@ export default {
       drawer: false,
       miniState: true,
       loginPersistent: false,
-      logoutPersistent: false,
-      registerPersistent: false,
-      isLogin: false,
+      logoutPersistent: false
     }
   },
   computed: {
     links: {
       get(){
         return this.$store.state.module.links
-        // return this.$store.state.links
       }
+    },
+    isLogin(){
+      return this.$store.state.module.isLogin
     }
   },
   methods: {
@@ -112,14 +157,22 @@ export default {
       }
     },
 
-    registerClose(){
-      this.registerPersistent = false
-    },
     loginClose(){
       this.loginPersistent = false
     },
     logoutClose(){
       this.logoutPersistent = false
+    }
+  },
+  mounted() {
+    let user = localStorage.getItem('userInfo');
+    if(user == null || user == undefined){
+      this.$q.loading.hide()
+      return
+    }
+    if(this.$ws.readyState !== this.$ws.OPEN){
+      console.log("ws重新连接")
+      this.$ws.init()
     }
   }
 }

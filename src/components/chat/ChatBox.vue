@@ -35,6 +35,11 @@
           type="textarea"
         />
       </div>
+
+      <q-inner-loading :showing="visible">
+        <q-spinner-gears size="50px" color="primary" />
+      </q-inner-loading>
+
     </div>
 
 </template>
@@ -74,14 +79,7 @@
     name: "MessageBox",
     data(){
       return {
-        // textMsg: '',
-        // targetUser: {
-        //   id: '111',
-        //   username: 'xxx',
-        //   email: 'wstapforth5@pcworld.com',
-        //   avatar: 'avatar2.jpg',
-        //   remark: '1号朋友'
-        // },
+        visible: false,
         chatPacket: {
           isSender: true,
           senderId: '111',
@@ -126,6 +124,7 @@
       }
     },
     mounted() {
+      this.visible = false
       let user = this.$route.query.user;
       if (user == null){
         console.log("目标为空")
@@ -147,6 +146,7 @@
       }
       console.log("发送chat_init")
       this.$ws.send(JSON.stringify(dataPacket),(e)=>{
+        this.visible = true
         if(e.status == 200){
           this.$notify.successNotify(e.msg)
         }else {

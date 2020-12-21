@@ -49,7 +49,16 @@ const globalFunc= {
         { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
       ]
     })
-
+  },
+  serverNotify(packet){
+    Vue.prototype.$q.notify({
+      position: 'top-right',
+      caption: packet.username,
+      message: packet.msg,
+      color: 'purple',
+      timeout: 5000,
+      avatar: packet.avatar,
+    })
   }
 }
 

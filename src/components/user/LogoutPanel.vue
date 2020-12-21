@@ -33,8 +33,8 @@
     },
     methods: {
       onSubmit(){
-        // this.$emit('onSubmit',this.user)
-        this.$store.commit('modify_login_status',false)
+        this.$store.state.module.isLogin = false
+        this.onClose()
       },
       onClose(){
         this.$emit('onClose')

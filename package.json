@@ -6,13 +6,18 @@
   "author": "Hypocrite <zcx981206@163.com>",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "serve": "quasar dev",
+    "build": "quasar build"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
-    "quasar": "^1.0.0"
+    "q-colorize-mixin": "^1.0.10",
+    "quasar": "^1.0.0",
+    "video.js": "^7.10.2",
+    "vue-video-player": "^5.0.2"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0"

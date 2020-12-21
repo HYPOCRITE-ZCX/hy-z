@@ -12,7 +12,12 @@ const routes = [
           { path: 'jump', component: () => import('components/chat/Jump') }
         ]
       },
-      { path: 'video', component: () => import('pages/Video.vue') },
+      {
+        path: 'video', component: () => import('pages/Video.vue') ,
+        children: [
+          {path: 'player',component: () => import('components/video/Player')}
+        ]
+      },
     ]
   },
 

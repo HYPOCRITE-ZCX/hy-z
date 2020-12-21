@@ -7,5 +7,9 @@ axios.create({
   withCredentials: true,// 指定某个请求应该发送凭据。允许客户端携带跨域cookie，也需要此配置
   crossDomain: true
 });
+axios.interceptors.request.use(config => {
+  config.headers.token = localStorage.getItem('userInfo')
+  return config
+})
 
 Vue.prototype.$axios = axios

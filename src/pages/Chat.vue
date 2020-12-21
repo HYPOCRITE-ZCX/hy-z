@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-md">
-    <q-layout view="lHh Lpr lff" container style="height: 600px" class="shadow-2 rounded-borders">
+<!--  <div class="q-pa-md">-->
+    <q-layout view="lHh Lpr lff" container style="height: 700px" class="shadow-2 rounded-borders">
       <q-header elevated class="bg-cyan-8">
         <q-toolbar>
           <q-toolbar-title>{{chatTarget}}</q-toolbar-title>
@@ -15,10 +15,23 @@
         :breakpoint="400">
 
         <q-img src="https://cdn.quasar.dev/img/material.png" style="height: 150px;display: block">
-          <div class="absolute-bottom bg-transparent">
-            <q-avatar size="56px" class="q-mb-sm cursor-pointer" @click="addPanel = true">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
+          <div class="bg-transparent" style="width: 100%;height: 100%">
+            <div>
+              <q-avatar size="56px" class="q-mb-sm cursor-pointer" >
+                <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              </q-avatar>
+              <q-btn dense flat
+                     icon="person_add"
+                     class="float-right q-ml-md"
+                     @click="onOpenaddPanel"
+              />
+              <q-btn dense flat icon="notifications" class="float-right">
+                <q-badge color="red" text-color="white" floating>
+                  2
+                </q-badge>
+              </q-btn>
+            </div>
+
             <div class="text-weight-bold cursor-pointer">
               {{ user.username }}
               <q-popup-edit v-model="modifyInfo.username" content-class="bg-accent text-white">
@@ -64,7 +77,7 @@
       </q-page-container>
 
     </q-layout>
-  </div>
+<!--  </div>-->
 </template>
 
 <script>
@@ -107,16 +120,26 @@
           }
         })
       },
+      onOpenaddPanel(){
+        this.addPanel = true
+      },
       onCloseAddPanel(){
         this.addPanel = false
       }
     },
     mounted() {
+      this.$q.loading.show()
+      if(this.$ws.readyState != this.$ws.OPEN){
+        console.log("ws重新连接")
+        this.$ws.init()
+      }
       let user = localStorage.getItem('userInfo');
       if(user == null || user == undefined){
+        this.$q.loading.hide()
         return
       }
       this.user = JSON.parse(user)
+      this.$q.loading.hide()
     }
   }
 </script>

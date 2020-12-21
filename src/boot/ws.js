@@ -6,6 +6,8 @@ let list_panel_load_callback = null
 let heartbeat_callback = null
 let chat_init_callback = null
 let chat_callback = null
+let add_user_callback = null
+let pass_user_callback = null
 let listen_msg_callback = null
 const ws = {
 
@@ -47,6 +49,14 @@ const ws = {
         console.log("接收消息，触发chat_callback回调")
         chat_callback(data)
         break
+      case globalVar.protocol.ADD_USER:
+        console.log("接收消息，触发chat_callback回调")
+        add_user_callback(data)
+        break
+      case globalVar.protocol.PASS_USER:
+        console.log("接收消息，触发chat_callback回调")
+        pass_user_callback(data)
+        break
     }
   },
 
@@ -81,6 +91,14 @@ const ws = {
       case globalVar.protocol.CHAT:
         console.log("发送消息，设置chat_callback回调")
         chat_callback = callback
+        break
+      case globalVar.protocol.ADD_USER:
+        console.log("发送消息，设置chat_callback回调")
+        add_user_callback = callback
+        break
+      case globalVar.protocol.PASS_USER:
+        console.log("发送消息，设置chat_callback回调")
+        pass_user_callback = callback
         break
     }
     // dataPacket = JSON.stringify(dataPacket)

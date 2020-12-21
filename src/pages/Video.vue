@@ -1,22 +1,20 @@
 <template>
-  <div class="q-pa-md">
-<!--    <q-layout view="hHh lpR fFf" class="bg-grey-1">-->
-      <q-layout view="lHh Lpr lff" container style="height: 600px" class="shadow-2 rounded-borders">
-      <q-header elevated class="bg-white text-grey-8 q-py-xs" height-hint="58">
+    <q-layout view="lHh Lpr lff" container style="height: 700px" class="shadow-2 rounded-borders">
+      <q-header elevated class="bg-white text-grey-8 q-py-xs">
         <q-toolbar>
           <q-btn
             flat
             dense
             round
-            @click="leftDrawerOpen = !leftDrawerOpen"
             aria-label="Menu"
             icon="menu"
+            @click="drawer = !drawer"
           />
 
           <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
             <q-icon :name="fabYoutube" color="red" size="28px" />
             <q-toolbar-title shrink class="text-weight-bold">
-              YouTube
+              UVideo
             </q-toolbar-title>
           </q-btn>
 
@@ -56,15 +54,16 @@
       </q-header>
 
       <q-drawer
-        v-model="leftDrawerOpen"
+        v-model="drawer"
         show-if-above
-        bordered
         content-class="bg-grey-2"
-        :width="240"
-      >
+        :breakpoint="400"
+        :width="240">
         <q-scroll-area class="fit">
           <q-list padding>
-            <q-item v-for="link in links1" :key="link.text" v-ripple clickable>
+            <q-item v-for="link in links1"
+                    :key="link.text"
+                    v-ripple clickable>
               <q-item-section avatar>
                 <q-icon color="grey" :name="link.icon" />
               </q-item-section>
@@ -75,7 +74,7 @@
 
             <q-separator class="q-my-md" />
 
-            <q-item v-for="link in links2" :key="link.text" v-ripple clickable>
+            <q-item v-for="link in links2" :key="link.text" v-ripple clickable :to="link.to">
               <q-item-section avatar>
                 <q-icon color="grey" :name="link.icon" />
               </q-item-section>
@@ -118,8 +117,7 @@
                   v-for="button in buttons1"
                   :key="button.text"
                   class="YL__drawer-footer-link"
-                  href="javascript:void(0)"
-                >
+                  href="javascript:void(0)">
                   {{ button.text }}
                 </a>
               </div>
@@ -130,8 +128,7 @@
                   v-for="button in buttons2"
                   :key="button.text"
                   class="YL__drawer-footer-link"
-                  href="javascript:void(0)"
-                >
+                  href="javascript:void(0)">
                   {{ button.text }}
                 </a>
               </div>
@@ -144,58 +141,61 @@
         <router-view />
       </q-page-container>
     </q-layout>
-  </div>
 </template>
 
 <script>
+
+  const links1= [
+    { icon: 'home', text: 'Home' },
+    { icon: 'whatshot', text: 'Trending' },
+    { icon: 'subscriptions', text: 'Subscriptions' }
+  ]
+  const links2= [
+    { icon: 'folder', text: 'Library' ,to: '/video/player'},
+    { icon: 'restore', text: 'History' ,to: '/video/player'},
+    { icon: 'watch_later', text: 'Watch later' ,to: '/video/player'},
+    { icon: 'thumb_up_alt', text: 'Liked videos' ,to: '/video/player'}
+  ]
+  const links3= [
+    { icon: 'fabYoutube', text: 'YouTube Premium' },
+    { icon: 'local_movies', text: 'Movies & Shows' },
+    { icon: 'videogame_asset', text: 'Gaming' },
+    { icon: 'live_tv', text: 'Live' }
+  ]
+  const links4= [
+    { icon: 'settings', text: 'Settings' },
+    { icon: 'flag', text: 'Report history' },
+    { icon: 'help', text: 'Help' },
+    { icon: 'feedback', text: 'Send feedback' }
+  ]
+  const buttons1= [
+    { text: 'About' },
+    { text: 'Press' },
+    { text: 'Copyright' },
+    { text: 'Contact us' },
+    { text: 'Creators' },
+    { text: 'Advertise' },
+    { text: 'Developers' }
+  ]
+   const buttons2=[
+    { text: 'Terms' },
+    { text: 'Privacy' },
+    { text: 'Policy & Safety' },
+    { text: 'Test new features' }
+  ]
   export default {
     name: "Video",
     data () {
-      return {
-        leftDrawerOpen: false,
-        search: '',
-        links1: [
-          { icon: 'home', text: 'Home' },
-          { icon: 'whatshot', text: 'Trending' },
-          { icon: 'subscriptions', text: 'Subscriptions' }
-        ],
-        links2: [
-          { icon: 'folder', text: 'Library' },
-          { icon: 'restore', text: 'History' },
-          { icon: 'watch_later', text: 'Watch later' },
-          { icon: 'thumb_up_alt', text: 'Liked videos' }
-        ],
-        links3: [
-          { icon: fabYoutube, text: 'YouTube Premium' },
-          { icon: 'local_movies', text: 'Movies & Shows' },
-          { icon: 'videogame_asset', text: 'Gaming' },
-          { icon: 'live_tv', text: 'Live' }
-        ],
-        links4: [
-          { icon: 'settings', text: 'Settings' },
-          { icon: 'flag', text: 'Report history' },
-          { icon: 'help', text: 'Help' },
-          { icon: 'feedback', text: 'Send feedback' }
-        ],
-        buttons1: [
-          { text: 'About' },
-          { text: 'Press' },
-          { text: 'Copyright' },
-          { text: 'Contact us' },
-          { text: 'Creators' },
-          { text: 'Advertise' },
-          { text: 'Developers' }
-        ],
-        buttons2: [
-          { text: 'Terms' },
-          { text: 'Privacy' },
-          { text: 'Policy & Safety' },
-          { text: 'Test new features' }
-        ]
+      return{
+        drawer: false,
+        title: 'zscsc',
+        links1: links1,
+        links2: links2,
+        links3: links3,
+        links4: links4,
+        buttons1: buttons1,
+        buttons2: buttons2,
       }
-    },
-    created () {
-      this.fabYoutube = fabYoutube
     }
   }
 </script>

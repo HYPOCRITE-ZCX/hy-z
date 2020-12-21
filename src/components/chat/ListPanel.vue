@@ -90,6 +90,9 @@
     </q-tab-panels>
 
     <!--        </q-scroll-area>-->
+    <q-inner-loading :showing="visible">
+      <q-spinner-gears size="50px" color="primary" />
+    </q-inner-loading>
   </div>
 </template>
 
@@ -206,7 +209,8 @@
         tab: 'images',
         chat_bubble_color: 'white',
         msgList: [],
-        groups:[]
+        groups:[],
+        visible: false
       }
     },
     methods: {
@@ -219,8 +223,10 @@
       }
     },
     mounted() {
+      this.visible = true
       let userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if(userInfo === null || userInfo === undefined){
+        this.visible = false
         return
       }
       let dataPacket = {
@@ -230,14 +236,15 @@
         }
       }
       this.$ws.send(JSON.stringify(dataPacket),(e)=>{
+        this.visible = false
         if(e.status==200){
           this.groups = e.userGroupInfo
           this.$notify.successNotify(e.msg)
         }else {
           this.$notify.errorNotify(e.msg)
         }
-
       })
+      this.visible = false
     }
   }
 </script>

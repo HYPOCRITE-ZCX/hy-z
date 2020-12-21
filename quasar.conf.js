@@ -18,6 +18,8 @@ module.exports = function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
+      'qmediaplayer',
+      'myvideo',
       'globalfunc',
       'ws',
       'axios',
@@ -80,13 +82,13 @@ module.exports = function (/* ctx */) {
             '^/center': ''
           }
         },
-        // '/chat': {
-        //   target: 'http://192.168.124.3:9031',
-        //   changOrigin: true,
-        //   pathRewrite: {
-        //     '^/chat': ''
-        //   }
-        // }
+        '/video': {
+          target: 'http://192.168.124.3:8383',
+          changOrigin: true,
+          pathRewrite: {
+            '^/video': ''
+          }
+        }
       },
     },
 
@@ -95,7 +97,8 @@ module.exports = function (/* ctx */) {
       iconSet: 'material-icons', // Quasar icon set
       lang: 'en-us', // Quasar language pack
       config: {
-        Object: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
+        Object: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ },
+        loading: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
       },
 
       // Possible values for "importStrategy":
@@ -112,7 +115,8 @@ module.exports = function (/* ctx */) {
 
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'Loading'
       ]
     },
 

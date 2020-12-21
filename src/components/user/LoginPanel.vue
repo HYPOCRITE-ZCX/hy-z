@@ -32,13 +32,32 @@
                @click="onSubmit"
         />
       </q-card-actions>
+
+      <q-card-actions class="bg-white text-grey" align="center">
+        <label class="q-mr-xs cursor-pointer"
+               @click="registerPersistent = true">
+          register
+        </label>
+        <q-separator vertical />
+        <label class="q-ml-xs cursor-pointer">
+          forget
+        </label>
+      </q-card-actions>
+
     </q-card>
+
+    <register-panel @onClose="registerClose"
+                    :show="registerPersistent">
+    </register-panel>
+
   </q-dialog>
 </template>
 
 <script>
   import globalVar from "src/store/globalvar";
+  import RegisterPanel from "components/user/RegisterPanel";
   export default {
+    components: {RegisterPanel},
     inject: ['reload'],
     name: "LoginPanel",
     props: {
@@ -50,6 +69,7 @@
     data(){
       return{
         loading: false,
+        registerPersistent: false,
         userLoginInfo: {
           email: '',
           password: '',
@@ -64,14 +84,14 @@
             .then( (response) => {
               const data = response.data.result
               if(data.status == 200){
-                localStorage.setItem('userInfo',JSON.stringify(data.user));
                 let item = localStorage.getItem('userInfo');
                 if(item!=null){
-                  console.log("用户已存在")
+                  console.log("用户已登录")
                 }
+                localStorage.setItem('userInfo',JSON.stringify(data.user));
                 this.loading = false
                 this.onClose()
-                this.$store.commit('modify_login_status',true)
+                this.$store.state.module.isLogin = true
                 this.$notify.successNotify(data.msg)
                 // this.reload()
                 this.$ws.init()
@@ -88,6 +108,9 @@
                     }else {
                       this.$notify.successNotify(e.msg)
                     }
+                    if(e.sub_protocol === globalVar.protocol.ADD_REQUEST_NOTIFY){
+                      this.$notify.serverNotify(e.requestPacket)
+                    }
                   }else {
                     this.$notify.errorNotify(e.msg)
                   }
@@ -100,9 +123,11 @@
       },
       onClose(){
         this.loading = false
-        // this.$notify.infoNotify("b")
         this.$emit('onClose')
-      }
+      },
+      registerClose(){
+        this.registerPersistent = false
+      },
     }
   }
 </script>
