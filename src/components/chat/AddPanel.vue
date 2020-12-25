@@ -292,8 +292,8 @@
           }
         })
       },
-      addRequest(id,receiverId){
-        this.requestPacket.id = id
+      addRequest(receiverId){
+        // this.requestPacket.id = id
         this.requestPacket.receiverId = receiverId
         this.addShow = true
         this.isAdd = true

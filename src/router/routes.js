@@ -13,9 +13,10 @@ const routes = [
         ]
       },
       {
-        path: 'video', component: () => import('pages/Video.vue') ,
+        path: 'vide',
+        component: () => import('pages/Video.vue'),
         children: [
-          {path: 'player',component: () => import('components/video/Player')}
+          { path: 'player',component: () => import('components/video/Player')}
         ]
       },
     ]

@@ -2,7 +2,7 @@
 <!--  <div>-->
     <video-player class="video-player vjs-custom-skin"
                   :playsinline="true"
-                  ref="videoPlayer"
+                  :ref="videoPlayer"
                   :options="playerOptions">
     </video-player>
 <!--    <q-media-player-->
@@ -58,31 +58,31 @@
           width: document.documentElement.clientWidth,
           notSupportedMessage: '此视频暂时无法播放' //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         },
-        isPlaying: false,
-        video: {
-          label: 'Tears of Steel',
-          poster: require('../../assets/20201121-3.jpg'),
-          sources: [
-            {
-              src: 'http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/tears_of_steel_720p.mov',
-              type: 'video/mp4'
-            }
-          ],
-          tracks: [
-            {
-              src: 'media/TearsOfSteel/TOS-en-us.vtt',
-              kind: 'subtitles',
-              srclang: 'en-us',
-              label: 'English'
-            },
-            {
-              src: 'media/TearsOfSteel/TOS-zh-hans.vtt',
-              kind: 'subtitles',
-              srclang: 'zh-hans',
-              label: 'Chinese'
-            }
-          ]
-        }
+        // isPlaying: false,
+        // video: {
+        //   label: 'Tears of Steel',
+        //   poster: require('../../assets/20201121-3.jpg'),
+        //   sources: [
+        //     {
+        //       src: 'http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/tears_of_steel_720p.mov',
+        //       type: 'video/mp4'
+        //     }
+        //   ],
+        //   tracks: [
+        //     {
+        //       src: 'media/TearsOfSteel/TOS-en-us.vtt',
+        //       kind: 'subtitles',
+        //       srclang: 'en-us',
+        //       label: 'English'
+        //     },
+        //     {
+        //       src: 'media/TearsOfSteel/TOS-zh-hans.vtt',
+        //       kind: 'subtitles',
+        //       srclang: 'zh-hans',
+        //       label: 'Chinese'
+        //     }
+        //   ]
+        // }
       }
     },
     methods: {

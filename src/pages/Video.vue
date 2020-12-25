@@ -151,10 +151,10 @@
     { icon: 'subscriptions', text: 'Subscriptions' }
   ]
   const links2= [
-    { icon: 'folder', text: 'Library' ,to: '/video/player'},
-    { icon: 'restore', text: 'History' ,to: '/video/player'},
-    { icon: 'watch_later', text: 'Watch later' ,to: '/video/player'},
-    { icon: 'thumb_up_alt', text: 'Liked videos' ,to: '/video/player'}
+    { icon: 'folder', text: 'Library' ,to: '/vide/player'},
+    { icon: 'restore', text: 'History' ,to: '/vide/player'},
+    { icon: 'watch_later', text: 'Watch later' ,to: '/vide/player'},
+    { icon: 'thumb_up_alt', text: 'Liked videos' ,to: '/vide/player'}
   ]
   const links3= [
     { icon: 'fabYoutube', text: 'YouTube Premium' },
