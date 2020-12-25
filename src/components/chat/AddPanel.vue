@@ -54,7 +54,7 @@
             <q-item-section side>
               <q-btn color="secondary"
                      size="sm"
-                     @click.stop="passRequest(r.id,r.receiverId)"
+                     @click.stop="passRequest(r.senderId,r.id)"
                      label="同意" />
             </q-item-section>
           </q-item>
@@ -205,6 +205,7 @@
     }
   ]
   export default {
+    inject: ['reload'],
     name: "AddPanel",
     props: {
       show: {
@@ -217,10 +218,10 @@
         searchList: searchList,
         requestList: requestList,
         target: '',
-        visible: false,
-        group_visible: false,
-        addShow: false,
-        isAdd: false,
+        visible: false, //显示加载效果
+        group_visible: false, //获取分组时的加载
+        addShow: false, //发送请求时的备注面板显示
+        isAdd: true, //判断是添加好友还是通过请求
         options: [
           {
             id: '1111',
@@ -269,7 +270,7 @@
               }
             })
       },
-      addUser(){
+      addUser(){ //在发送添加请求时，编辑备注信息和好友的分组
         this.requestPacket.groupId = this.defaultGroup.id
         let dataPacket = null
         if(this.isAdd){
@@ -283,6 +284,7 @@
             protocol: globalVar.protocol.PASS_USER,
             packet: this.requestPacket
           }
+          this.isAdd = true
         }
         this.$ws.send(JSON.stringify(dataPacket),(e)=>{
           if(e.status==200){
@@ -292,12 +294,13 @@
           }
         })
       },
-      addRequest(receiverId){
-        // this.requestPacket.id = id
-        this.requestPacket.receiverId = receiverId
+      addRequest(receiverId,requestId){//获取一些用户的基本信息，并唤醒添加面
+        // this.reload()
         this.addShow = true
-        this.isAdd = true
+        // this.isAdd = true
         this.group_visible = true
+        this.requestPacket.id = requestId
+        this.requestPacket.receiverId = receiverId
         let userId = this.requestPacket.senderId
         this.$axios.get("/center/group-manage/get-group-name/"+userId)
             .then( (response) => {
@@ -316,9 +319,10 @@
       ignoreRequest(){
 
       },
-      passRequest(receiverId){
+      passRequest(receiverId,requestId){
+        console.log(receiverId+"-----"+requestId)
         this.isAdd = false
-        this.addRequest(receiverId)
+        this.addRequest(receiverId,requestId)
       },
       addPanelClose(){
         this.addShow = false;

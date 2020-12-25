@@ -56,6 +56,7 @@
 <script>
   import globalVar from "src/store/globalvar";
   import RegisterPanel from "components/user/RegisterPanel";
+  import { mapState } from 'vuex'
   export default {
     components: {RegisterPanel},
     inject: ['reload'],
@@ -76,6 +77,17 @@
         }
       }
     },
+    computed: {
+      getIsLogin(){
+        return this.$store.state.module.isLogin
+      }
+    },
+    watch: {
+      getIsLogin(val){
+        console.log("收到的值为"+val)
+        this.isLogin = val
+      }
+    },
     methods: {
       onSubmit(){
         // this.$emit('onSubmit',this.user)
@@ -83,6 +95,7 @@
         this.$axios.post("/center/login",this.userLoginInfo,)
             .then( (response) => {
               const data = response.data.result
+
               if(data.status == 200){
                 let item = localStorage.getItem('userInfo');
                 if(item!=null){
@@ -91,7 +104,8 @@
                 localStorage.setItem('userInfo',JSON.stringify(data.user));
                 this.loading = false
                 this.onClose()
-                this.$store.state.module.isLogin = true
+                // this.$store.state.module.isLogin = true
+                this.$store.commit('module/modify_login_status',true)
                 this.$notify.successNotify(data.msg)
                 // this.reload()
                 this.$ws.init()

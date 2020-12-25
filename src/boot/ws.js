@@ -61,8 +61,9 @@ const ws = {
   },
 
   close(){
-    console.log("close触发")
-    localStorage.removeItem("userInfo")
+    // console.log("close触发")
+    // localStorage.removeItem("userInfo")
+
   },
 
   error(e){

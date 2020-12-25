@@ -17,7 +17,7 @@ export default function () {
         color: ''
       },
       {
-        to: '/video',
+        to: '/vide',
         icon: 'video_library',
         text: 'Video ',
         color: ''
@@ -31,3 +31,4 @@ export default function () {
     ],
   }
 }
+

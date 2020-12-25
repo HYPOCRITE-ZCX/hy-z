@@ -20,6 +20,7 @@
 
 <script>
   export default {
+    inject: ['reload'],
     name: "LogoutPanel",
     props: {
       user: {
@@ -33,7 +34,8 @@
     },
     methods: {
       onSubmit(){
-        this.$store.state.module.isLogin = false
+        this.$store.commit('module/modify_login_status',false)
+        this.reload()
         this.onClose()
       },
       onClose(){
